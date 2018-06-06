@@ -1,5 +1,5 @@
 -- Beispiel für die Nutzung von Indizes
--- Erstellen einer einfachen temporüren Tabelle mit 1M Zeilen
+-- Erstellen einer einfachen temporären Tabelle mit 1M Zeilen
 
 SET NOCOUNT ON
 DROP TABLE IF EXISTS #temp;
@@ -17,7 +17,7 @@ UPDATE #temp
 SET txt = 'B'
 WHERE id/100 = 9
 
--- Den Code nach erstellen der Tabelle inzeln ausführen
+-- Den Code nach erstellen der Tabelle einzeln ausführen
 -- Ctrl+M: akt. Ausführungsplan mit anzeigen
 
 -- Variante 1: Kein Index, einfache Abfrage
@@ -45,7 +45,7 @@ SELECT * FROM #temp WHERE txt = 'B'
 DROP INDEX #idx_nc_temp ON #temp
 
 
--- Variante 4: Mit Non-Clustered Index auf die txt-Spalte, diesmal mit B-Tree statt Heap (in diesem Fall die effektivste Lüsung, da txt=B der Sortierung entspricht)
+-- Variante 4: Mit Non-Clustered Index auf die txt-Spalte, diesmal mit B-Tree statt Heap (in diesem Fall die effektivste Lösung, da txt=B der Sortierung entspricht)
 -- Ausführungsplan: Suche nur auf Basis des Non-Clustered Index, da id sowieso enthalten (100 Zeilen) (Kosten: 0.003392)
 CREATE CLUSTERED INDEX #idx_temp ON #temp(id)
 CREATE NONCLUSTERED INDEX #idx_nc_temp ON #temp(txt)
@@ -57,7 +57,7 @@ DROP INDEX #idx_temp ON #temp
 
 
 
-
+
 -- Abfragen der Metadaten zu den Indizes einer Datenbank
 -- hier bzgl. Fragmentation, fehlender und ungenutzter Indizes
 
@@ -574,7 +574,7 @@ JOIN sys.indexes i ON t.object_id = i.object_id
 ORDER BY SchemaName, TableName, IndexName
 
 
--- Liste der Tabellen und Datentypen sowie der Lünge und der maximalen Lünge
+-- Liste der Tabellen und Datentypen sowie der L�nge und der maximalen L�nge
 
 SELECT
 	 s.name AS SchemaName
@@ -665,7 +665,7 @@ GROUP BY c.companyname, YEAR(o.[orderdate])
 ORDER BY Anzahl DESC
 
 
--- übung 2
+-- Übung 2
 ---- Chars Tabelle
 DROP TABLE IF EXISTS dbo.Chars;
 GO
@@ -696,12 +696,12 @@ GO
 SELECT * FROM dbo.IDs
 GO
 
--- übung 3
----- Tabelle lüschen
+-- Übung 3
+---- Tabelle l�schen
 DROP TABLE dbo.Chars
 GO
 
----- View aufrufen führt zu Fehler
+---- View aufrufen f�hrt zu Fehler
 SELECT * FROM dbo.IDs
 GO
 
@@ -729,12 +729,12 @@ SELECT Val FROM (VALUES (1),(2),(3),(4),(5)) tbl(Val)
 ) val
 GO
 
----- Tabelle lüschen
+---- Tabelle l�schen
 DROP TABLE dbo.Chars -- Fehlermeldung weil es noch eine View auf die Tabelle gibt
 GO
 
----- übung 4
----- View ündern
+---- Übung 4
+---- View �ndern
 ALTER VIEW dbo.IDs (ID,Char,Val)
 WITH SCHEMABINDING
 AS
@@ -748,16 +748,16 @@ GO
 
 SELECT * FROM dbo.IDs -- 5 Zeilen
 
--- Update von A auf ü
+-- Update von A auf Ä
 UPDATE dbo.IDs
-SET Char = 'ü'
+SET Char = 'Ä'
 WHERE Char = 'A'
 
 SELECT * FROM [dbo].[IDs] -- keine Zeilen mehr
 
 
 -- das Ganze nochmal, aber mit Check-Option
----- View + Tabelle lüschen
+---- View + Tabelle löschen
 DROP VIEW dbo.IDs
 GO
 DROP TABLE dbo.Chars
@@ -789,9 +789,9 @@ GO
 
 SELECT * FROM dbo.IDs -- 5 Zeilen
 
--- Update von A auf ü nun nicht mehr müglich
+-- Update von A auf � nun nicht mehr möglich
 UPDATE dbo.IDs
-SET Char = 'ü'
+SET Char = 'Ä'
 WHERE Char = 'A'
 
 
@@ -806,7 +806,7 @@ WHERE Char = 'A'
 -- View als Ausgangspunkt für Abfragen:
 USE TSQL2012;
 
--- Lüschen falls bereits vorhanden
+-- Löschen falls bereits vorhanden
 IF OBJECT_ID (N'Sales.OrderTotalsByYear') IS NOT NULL
 DROP VIEW Sales.OrderTotalsByYear;
 GO
@@ -824,7 +824,7 @@ GO
 
 -- Gleiche View als Function
 
--- Lüschen falls bereits vorhanden
+-- Löschen falls bereits vorhanden
 IF OBJECT_ID (N'Sales.fn_OrderTotalsByYear') IS NOT NULL
 DROP FUNCTION Sales.fn_OrderTotalsByYear;
 GO
@@ -875,7 +875,7 @@ IF OBJECT_ID (N'Sales.fn_OrderTotalsByYear') IS NOT NULL
 DROP FUNCTION Sales.fn_OrderTotalsByYear;
 GO
 
-CREATE FUNCTION Sales.fn_OrderTotalsByYear (@orderyear int) -- Parameter übergeben
+CREATE FUNCTION Sales.fn_OrderTotalsByYear (@orderyear int) -- Parameter �bergeben
 RETURNS TABLE
 AS
 RETURN
@@ -890,12 +890,12 @@ SELECT orderyear, qty FROM Sales.fn_OrderTotalsByYear(2007);
 
 USE TSQL2012;
 
--- Wenn Funktion schon vorhanden, dann lüschen
+-- Wenn Funktion schon vorhanden, dann l�schen
 IF OBJECT_ID('Sales.udf_turnover') IS NOT NULL
 DROP FUNCTION Sales.udf_turnover
 GO
 
--- Funktion erstellen, übergabeparameter UnitPrice und Quantity, deren Multiplikation als Rückgabewert
+-- Funktion erstellen, �bergabeparameter UnitPrice und Quantity, deren Multiplikation als R�ckgabewert
 CREATE FUNCTION Sales.udf_turnover
 (
 	@unitprice AS MONEY,
@@ -919,7 +919,7 @@ WHERE Sales.udf_turnover(unitprice, qty) > 1000;
 
 USE TSQL2012;
 
--- Funktion lüschen falls bereits vorhanden
+-- Funktion l�schen falls bereits vorhanden
 IF OBJECT_ID('Sales.udf_QuantityFilter1') IS NOT NULL
 DROP FUNCTION Sales.udf_QuantityFilter1;
 GO
@@ -931,7 +931,7 @@ CREATE FUNCTION Sales.udf_QuantityFilter1
 	@highqty AS SMALLINT
 )
 RETURNS TABLE AS 
-RETURN -- Tabelle als Rückgabewert, nur ein SELECT zur Definition
+RETURN -- Tabelle als R�ckgabewert, nur ein SELECT zur Definition
 (
 	SELECT orderid, unitprice, qty
 	FROM Sales.OrderDetails
@@ -940,7 +940,7 @@ RETURN -- Tabelle als Rückgabewert, nur ein SELECT zur Definition
 GO
 
 
--- Funktion lüschen falls bereits vorhanden
+-- Funktion l�schen falls bereits vorhanden
 IF OBJECT_ID('Sales.udf_QuantityFilter2') IS NOT NULL
 DROP FUNCTION Sales.udf_QuantityFilter2;
 GO
@@ -951,7 +951,7 @@ CREATE FUNCTION Sales.udf_QuantityFilter2
 	@lowqty AS SMALLINT,
 	@highqty AS SMALLINT
 )
-RETURNS @returntable TABLE -- der Rückgabewert ist hier eine Tabellenvariable mit definierten Spalten
+RETURNS @returntable TABLE -- der R�ckgabewert ist hier eine Tabellenvariable mit definierten Spalten
 (
 	orderid INT,
 	unitprice MONEY,
@@ -967,7 +967,7 @@ BEGIN -- Die Tabellen-Variable kann mehrfach modifiziert werden.
 END;
 GO
 
--- Der Aufruf ist in beiden Füllen gleich und in diesem Fall ebenso das Ergebnis
+-- Der Aufruf ist in beiden F�llen gleich und in diesem Fall ebenso das Ergebnis
 SELECT * FROM Sales.udf_QuantityFilter1 (10,20)
 
 SELECT * FROM Sales.udf_QuantityFilter2 (10,20)
