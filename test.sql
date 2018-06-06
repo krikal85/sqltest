@@ -1025,4 +1025,198 @@ CROSS JOIN  (SELECT val  FROM	(VALUES (1), (2), (3), (4), (5)) tbl(val)) val
 
 
 
+90.	Erstellen Sie eine Abfrage X (Übungsbeispiel Abfrage zu View zu Funktion zu SP)
+•	Speichern Sie diese als View ab.
+
+•	Fragen Sie diese View mit einem Parameter ab und speichern diese Abfrage anschliessend als Funktion.
+•	Nutzen Sie diese Funktion in einer Stored Procedure und fügen Sie einen Rückgabewert hinzu (z.B. Anzahl Zeilen).
+•	Fragen Sie die Prozedur ab und lesen Sie den Rückgabewert aus.
+
+-- Alle Befehle beziehen sich auf MyLibrary
+-- Erstellen View
+
+CREATE VIEW dbo.catName AS
+
+SELECT*
+FROM categories
+WHERE categories.parentCatID=3;
+
+-- Funktion
+
+CREATE FUNCTION dbo.fnOrderBYparentCatID (@catID int)
+RETURNS TABLE
+AS
+RETURN
+
+(SELECT*
+FROM categories
+WHERE parentCatID=@catID);
+
+-- Funktion löschen 
+
+DROP FUNCTION dbo.fnOrderBYparentCatID
+
+-- Abfrage Funktion
+
+SELECT *
+FROM fnOrderBYparentCatID(3);
+
+--Procedure
+
+CREATE Procedure dbo.sp_getCatName
+	@searchString nvarchar(20),
+	@count int =null output -- Variable count zum zählen der Einträge als null (leer) deklariert 
+
+AS
+
+SELECT *
+FROM dbo.categories
+WHERE catName LIKE'%'+@searchString+'%'
+ORDER By catID
+
+SELECT @count = @@ROWCOUNT;
+
+GO
+
+
+ 
+--Procedure löschen
+DROP PROCEDURE dbo.sp_getCatName
+
+-- Abfrage Procedure
+EXEC sp_getCatName 'c'
+GO
+
+-- Abfrage der Procedure wie viele Einträge mit 'Suchwort' exestieren
+DECLARE @count int
+EXEC sp_getCatName 'c', @count output
+SELECT @count
+GO
+
+91.	Fügen Sie in die Tabelle X zwei Datensätze A und B ein. Ein INSERT wird nicht funktionieren. (Übungsbeispiel Error Handling)
+
+•	Implementieren Sie eine Lösung ohne Fehlerbehandlung
+
+	-- Insert #1 wird scheitern wegen einem doppelten Schlüssel
+	INSERT INTO Production.Products 
+		(productid, productname, supplierid, categoryid, unitprice, discontinued)
+		VALUES(1, N'Test1: Ok categoryid', 1, 1, 18.00, 0);
+	
+•	Implementieren Sie eine Lösung mit strukturierter Fehlerbehandlung und geben Sie im Fehlerfall nur ein PRINT mit Fehlernummer und Fehlermeldung aus.
+
+SET NOCOUNT ON;
+DECLARE @error_number AS INT, @error_message AS NVARCHAR(1000), @error_severity AS INT;
+
+BEGIN TRY
+	BEGIN TRAN;
+		SET IDENTITY_INSERT Production.Products ON;
+
+		INSERT INTO Production.Products
+			(productid, productname, supplierid, categoryid, unitprice, discontinued)
+			VALUES(1, N'Test1: Ok categoryid', 1, 1, 18.00, 0);
+	
+		INSERT INTO Production.Products
+			(productid, productname, supplierid, categoryid, unitprice, discontinued)
+			VALUES(101, N'Test2: Bad categoryid', 1, 10, 18.00, 0);
+
+		SET IDENTITY_INSERT Production.Products OFF;
+	COMMIT TRAN;
+END TRY
+
+BEGIN CATCH
+	SELECT   @error_number = ERROR_NUMBER()
+			,@error_message = ERROR_MESSAGE()
+			,@error_severity = ERROR_SEVERITY();
+
+	RAISERROR (@error_message, @error_number, 1);
+
+	IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+END CATCH;
+
+ 
+92.	Erstellen Sie für die Tabelle X eine Abfrage, welche die Tabelle um weitere Spalten ergänzt. (Beispiel Window Functions Sum)
+•	Fügen Sie eine Spalte Teilsumme hinzu
+
+		-- Ermittlung der Menge pro Kunde in einer zusätzlichen Spalte
+SELECT * 
+		,SUM(Menge) OVER (PARTITION BY KundenID) AS KundenGesamtMenge
+		FROM #baseTable
+
+-- Ermittlung der Menge pro Kunde
+		SELECT KundenID, SUM(Menge) AS GesamtMenge FROM #baseTable GROUP BY KundenId
+
+•	Fügen Sie eine Spalte Gesamtsumme hinzu
+
+SELECT * ,SUM(Menge) OVER () AS GesamtMenge
+	FROM #baseTable
+
+•	Fügen Sie eine Spalte Anteil an Teilsumme hinzu
+
+SELECT * ,Menge *100.0 /SUM(Menge) OVER (PARTITION BY KundenID) AS 
+AnteilKundenGesamtMenge
+FROM #baseTable
+
+•	Fügen Sie eine Spalte Anteil an Gesamtsumme hinzu
+
+SELECT * ,Menge * 100.0 / SUM(Menge) OVER () AS AnteilAnGesamtMenge 
+--Auch das Mischen von gruppierten und nicht gruppierten Werten ist möglich
+FROM #baseTable
+
+•	Kombination aus allen Abfragen exklusive AnteilKundenGesamtMenge 
+
+SELECT * ,Menge *100.0 /SUM(Menge) OVER (PARTITION BY KundenID) AS
+KundenGesamtMenge
+,SUM(Menge) OVER () AS GesamtMenge
+,Menge * 100.0 / SUM(KundenGesamtMenge) OVER () AS AnteilAnKundenGesamtMenge 
+--Auch das Mischen von gruppierten und nicht gruppierten Werten ist möglich
+FROM #baseTable
+
+93.	Tabelle X enthält doppelte Datensatze, welche Sie mit einem GROUP BY und HAVING COUNT(*) >1 ermitteln können.
+•	Erstellen Sie eine Abfrage, welche doppelte Datensätze mit Hilfe von Window Functions ermittelt. Nutzen Sie dazu die Funktion ROW_Number und sortieren Sie absteigend.
+•	Jene Daten wo Row und Rank unterschiedlich sind, sind doppelt
+SELECT * 
+,ROW_NUMBER()	OVER (ORDER BY qty DESC) AS [ROW_NUMBER]	
+-- Zeilen durchnummerieren
+	,RANK() OVER (ORDER BY qty DESC) AS [Rank]	
+--Rang vergeben, mit Lücken z.B. 2x 11. Rang, dann kein 12. Rang
+,DENSE_RANK()	OVER (ORDER BY qty DESC) AS [DENSE_RANK]	
+-- Rang vergeben, ohne Lücken z.B. 2x 9., danach 10. Rang
+,NTILE(5)		OVER (ORDER BY qty DESC) AS [NTILE / Quartile] -- Quartil, Einteilung der Zeilen in x Gruppen
+FROM #temp
+
+
+SELECT * ,ROW_NUMBER()	OVER (ORDER BY authName DESC) AS [ROW_NUMBER]
+,RANK() OVER (ORDER BY authName DESC) AS [Rank]
+FROM dbo.authors
+ORDER by [ROW_NUMBER] DESC
+
+
+94.	Tabelle X enthält Verkaufszahlen für das Jahr 2016. (Übungsbeispiel Window Functions)
+•	Ermitteln Sie per Abfrage die kumulierten Werte in einer extra Spalte. Nutzen Sie eine Window Function.
+SELECT *, SUM(Menge) OVER (ORDER BY Tag ROWS BETWEEN UNBOUNDED PRECEDING 
+AND CURRENT ROW) AS MengeKumuliert
+FROM #baseTable
+
+95.	Erstellen Sie eine Stored Procedure, welche nur die Datensätze zurückgibt, welche in Spalte A den Wert X haben. Der Spaltenname ist fix, der Wert wird als Parameter übergeben. (Übungsbeispiel dynamisches SQL)
+•	Nutzen Sie dynamisches SQL
+
+
+•	Stellen Sie sicher, dass eine SQL Injection bestmöglich vermieden wird.
+CREATE PROCEDURE [Sales].[ListCustomersByCity] @city NVARCHAR(60)
+AS
+DECLARE @SQLString AS NVARCHAR(4000);
+
+SET @SQLString = 
+'SELECT companyname, contactname
+ FROM Sales.Customers 
+ WHERE city = ''' + @city + '''';
+
+EXEC(@SQLString); 	-- Dient zur Ausgabe da PROCEDURE IMMER nur EXEC 
+ausgeführt werden kann
+RETURN;
+GO
+
+•	Erstellen Sie eine Beispielabfrage, welche auch auf eine mögliche SQL Injection prüft
+EXEC Sales.ListCustomersByCity_noInjection
+	@city = 'London'
 
