@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Buch xmlns:xsd="http://www.w3.org/2001/XMLSchema-instance" xsd:noNamespaceSchemaLocation="02_buch.xsd">
+   <Titel>asdf</Titel>
+   <Preis>12</Preis> <!-- Alles zwischen 10 und 65 erlaubt -->
+   <Bestand Anzahl="123"/> <!-- Alle Attribute egal welcher Typ müssen unter Hochkommer stehen -->
+   <BestandProJahr Anzahl="123" Jahr="2001"/>
+</Buch>
+

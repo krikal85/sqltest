@@ -1,0 +1,25 @@
+<Rechnung>
+	
+    <Kunde nummer="KE_54_3ax">
+        <Name>
+            <Vorname>Homer J.</Vorname>
+            <Nachname>Simpson</Nachname>
+        </Name>
+        <Anschrift inland="0">Springfield</Anschrift>
+    </Kunde>
+
+    <Produktliste>
+        <Produkt nummer="2432">
+            <Name>Ketchup</Name>
+            <Merkmal>saftig</Merkmal>
+            <Merkmal>scharf</Merkmal>
+            <Preis>1,24€</Preis>
+        </Produkt>
+        <Produkt nummer="4212">
+            <Name>Duff</Name>
+            <Merkmal>Durstlöscher</Merkmal>
+            <Preis>2,49€</Preis>
+        </Produkt>
+    </Produktliste>
+
+</Rechnung>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:element name="Buch">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="Titel">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string"> <!-- https://www.w3schools.com/xml/schema_facets.asp -->
+                        <xsd:pattern value="[a-zA-Z]*"/> <!-- a-zA-Z sagt aus, dass man nur a-z,A-Z verwenden darf. Wenn man danach keinen * schreibt würde das bedeuten, dass man immer nur eine Zeichen schreiben darf. -->
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Preis">
+            <!-- Da der Wert zwischen 10 und 65 sein muss, muss man einen simpleType verwenden. -->
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="10"/>
+                        <xsd:maxInclusive value="65"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="Bestand" >
+                <xsd:complexType> <!-- Für alle Attribute braucht man auch sowas. -->
+                    <xsd:attribute name="Anzahl" type="xsd:integer" /> <!-- Achtung in der Angabe ist Integer groß geschreiben. Das geht nicht!!! Er muss klein sein. -->
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="BestandProJahr" >
+                <xsd:complexType>
+                    <xsd:attribute name="Anzahl" type="xsd:integer"/>
+                    <xsd:attribute name="Jahr" type="xsd:gYear"/>
+                </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>

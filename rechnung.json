@@ -1,0 +1,34 @@
+{
+	"Rechnung": {
+		"Kunde": {
+			"nummer":"KE_54_3ax",
+			"Name": {
+				"Vorname":"Homer J.",
+				"Nachname":"Simpson"
+				},
+			"Anschrift": {
+				"inland":0,
+				"text": "springfield"
+				}
+			}
+		},
+		"Produktliste": 
+		[
+			{
+				"Nummer": 2432,
+				"Name":"Ketchup",
+				"Merkmale":["saftig","scharf"],
+				"Preis": "1,24 €"
+			},
+			{
+				"Nummer": 4212,
+				"Name":"Duff",
+				"Merkmale":["Durstloescher"],
+				"Preis": "2,49 €"
+			}
+		]
+		
+		
+	
+	
+}

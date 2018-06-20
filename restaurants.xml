@@ -1,0 +1,33 @@
+<?xml-stylesheet type="text/xsl" href="restaurants.xsl"?>
+<Restaurants>
+	<Restaurant Name="Steirereck" Ort="Wien" Plz="1030" Adresse="Am Heumarkt 2A">
+		<Speisen>
+			<Speise Typ="Vorspeise" Name="Hauchdünn aufgeschnittenes Styriabeef"  />
+			<Speise Typ="Vorspeise" Name="Rindsuppe"  />
+			<Speise Typ="Hauptspeise" Name="Steirische Hendlfiletstreifen mit Curry"  />
+			<Speise Typ="Hauptspeise" Name="Zwiebelrostbraten"  />
+			<Speise Typ="Desert" Name="Ricotta-Mohnknödel"  />
+			<Speise Typ="Desert" Name="Panna Cotta"  />
+		</Speisen>
+	</Restaurant>
+	<Restaurant Name="Steirereck am Pogusch" Ort="Turnau" Plz="8625" Adresse="Pogusch 21">
+		<Speisen>
+			<Speise Typ="Vorspeise" Name="Zweierlei vom hausgebeizten Lachs"  />
+			<Speise Typ="Vorspeise" Name="Vogerl-Röhrlsalat"  />
+			<Speise Typ="Hauptspeise" Name="Bio-Knusperkarpfen"  />
+			<Speise Typ="Hauptspeise" Name="Kalbswiener"  />
+			<Speise Typ="Desert" Name="Flüssiger Schokokuchen"  />
+			<Speise Typ="Desert" Name="Creme Brulée" />
+		</Speisen>
+	</Restaurant>
+	<Restaurant Name="Tom Riederer" Ort="St. Andrä" Plz="8444" Adresse="Pfarrhof Sankt Andrä im Sausal 1">
+		<Speisen>
+			<Speise Typ="Vorspeise" Name="Sulz vom Styria-Beef"  />
+			<Speise Typ="Vorspeise" Name="Knuspriger Frischkäse"  />
+			<Speise Typ="Hauptspeise" Name="Wolfsbarschfilet"  />
+			<Speise Typ="Hauptspeise" Name="Kalbsleber und gebackenes Bries"  />
+			<Speise Typ="Desert" Name="Dunkles Schokomousse" />
+			<Speise Typ="Desert" Name="Orangen-Aperol-Tiramisu"  />
+		</Speisen>
+	</Restaurant>
+</Restaurants>
