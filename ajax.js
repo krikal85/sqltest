@@ -2,49 +2,35 @@ loadData();
 
 function loadData() 
 {
-
-    ajax("http://oliverklemencic.com/campus/rechnungen.json", function(text)
+    // Bitte Bitte änderts die variablennamen 
+   ajax("http://oliverklemencic.com/campus/rechnungen.json", function(text)
     {
         var dat = JSON.parse(text);
         showData(dat);
-    });
- /*    ajax("http://oliverklemencic.com/campus/details-201701.json", function(text)
-    {
-        var dat = JSON.parse(text);
-        showData(dat);
-    });
-    ajax("http://oliverklemencic.com/campus/details-201702.json", function(text)
-    {
-        var dat = JSON.parse(text);
-        showData(dat);
-    });
-    ajax("http://oliverklemencic.com/campus/details-20171234.json", function(text)
-    {
-        var dat = JSON.parse(text);
-        showData(dat);
-    });
-    ajax("http://oliverklemencic.com/campus/details-20171235.json", function(text)
-    {
-        var dat = JSON.parse(text);
-        showData(dat);
-    }); */
-
+    }); 
 }
+
     function showData(text)
     {
         console.log(text);
+        console.log(text.length);
         var divp = document.getElementById("resultContainer"); //Hier alle kinder Anhängen
         var h1 = document.createElement("h1");
         h1.innerText = "Kunden";
         divp.appendChild(h1);
-        console.log(text.length);
         // ul begins Kundennamen
         var ul = document.createElement("ul");
          for (let index = 0; index < text.length; index++) {
             var Name = text[index].kunde;
             console.log(Name);
-           var li = document.createElement("li");
+            var li = document.createElement("li");
+            console.log(text[index].nummer);
+            li.setAttribute("id", text[index].nummer ); // Id = der Dateiname für das neue Json
             li.innerText = Name;
+            li.addEventListener("click", function(e) {
+                var liElement = e.target;
+                subajax(liElement.id);
+                });
             ul.appendChild(li);
             
         }
@@ -97,6 +83,36 @@ function loadData()
         }
         divp.appendChild(tbl);
     }
+
+    function subajax(text)
+{
+    ajax("http://oliverklemencic.com/campus/details-" + text + ".json",function(inhalt)
+    {
+        var dat = JSON.parse(inhalt);
+        console.log(dat);
+        showData1(dat);
+    });
+}
+
+function showData1(text)
+{
+        var divp = document.getElementById("details"); //Hier alle kinder Anhängen
+        console.log(text);
+       divp.innerHTML = "";
+        var h1 = document.createElement("h1");
+        h1.innerText = "KTest";
+        divp.appendChild(h1);
+        var ul = document.createElement("ul");
+        console.log(text.length);
+        console.log(text);
+        for (var i in text) {
+           var li = document.createElement("li");
+           li.innerText = text[i];
+           ul.appendChild(li);
+        }
+        divp.appendChild(ul);
+
+}
 
     function ajax(resourceName, callback) {
 	
