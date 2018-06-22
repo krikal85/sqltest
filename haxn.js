@@ -223,3 +223,48 @@ function loadAjax(url, callback) {
 	xhr.send("");
 }
 
+
+
+//--------------------------------------
+//--von farid geht alles außer sortierung bitte ändern
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1">
+	
+  <xsl:template match="/">
+    <html>
+      <head><title>AgentInnen</title></head>
+      <body>
+        <h1>Einsatzgebiete</h1>
+          <ul>
+          
+            <xsl:for-each select="Agenten/Geheimdienst">
+                <li>
+                  <xsl:value-of select="text()"/> (<xsl:value-of select="@id"/>): 
+                  <xsl:for-each select="Agent"><xsl:value-of select="@location"/>   <xsl:if test="position() != last()">
+      <xsl:text>, </xsl:text>
+   </xsl:if></xsl:for-each>
+                </li>
+            </xsl:for-each>
+            
+          </ul>
+
+        <h1>AgentInnen</h1>
+        <ul>
+          <xsl:for-each select="Agenten/Geheimdienst">
+            <xsl:for-each select="Agent">
+             <xsl:sort select="id"/>
+            <li>
+           
+              AgentIn <xsl:value-of select="id"/>: <xsl:value-of select="text()"/> (<xsl:value-of select="../@id"/>, <xsl:value-of select="@location"/>)
+            </li>
+            </xsl:for-each>
+          </xsl:for-each>
+        </ul>
+      </body>
+    </html>
+  </xsl:template>
+
+</xsl:stylesheet>
