@@ -33,11 +33,13 @@ function addRechnungToTable(rechnung) {
         var tdz = document.createElement("td");
         var tds = document.createElement("td");
         var tdd = document.createElement("a");
-        tdd.innerText = "Details";
+         tdd.innerText = "Details";
+        tdd.setAttribute("id", rechnung[index].nummer );
         tdd.addEventListener("click", function(e) {
-            var tddtext = e.target;
-            showDetailsForRechnung(Kundennummer);
+            var tdetails = e.target;
+            showDetailsForRechnung(tdetails.id);
             });
+
        tdn.innerText = Name;
        tdk.innerText = Kundennummer;
        tdz.innerText = Zeit;
