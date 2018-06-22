@@ -1,0 +1,44 @@
+{
+	"steirereck-wien": {
+		"name": "Steirereck",
+		"ort": "Wien",
+		"plz": 1030,
+		"adresse": "Am Heumarkt 2A",
+		"speisen": [
+			{ "typ": "Vorspeise", "name": "Hauchdünn aufgeschnittenes Styriabeef" },
+			{ "typ": "Vorspeise", "name": "Rindsuppe" },
+			{ "typ": "Hauptspeise", "name": "Steirische Hendlfiletstreifen mit Curry" },
+			{ "typ": "Hauptspeise", "name": "Zwiebelrostbraten" },
+			{ "typ": "Desert", "name": "Ricotta-Mohnknödel" },
+			{ "typ": "Desert", "name": "Panna Cotta" }
+		]
+	},
+	"steirereck-pogusch": {
+		"name": "Steirereck am Pogusch",
+		"ort": "Turnau",
+		"plz": 8625,
+		"adresse": "Pogusch 21",
+		"speisen": [
+			{ "typ": "Vorspeise", "name": "Zweierlei vom hausgebeizten Lachs" },
+			{ "typ": "Hauptspeise", "name": "Bio-Knusperkarpfen" },
+			{ "typ": "Hauptspeise", "name": "Zwiebelrostbraten" },
+			{ "typ": "Desert", "name": "Flüssiger Schokokuchen" },
+			{ "typ": "Desert", "name": "Creme Brulée" }
+		]
+	},
+	"tomr": {
+		"name": "Tom Riederer",
+		"ort": "Sankt Andrä im Sausal",
+		"plz": 8444,
+		"adresse": "Pfarrhof Sankt Andrä im Sausal 1",
+		"speisen": [
+			{ "typ": "Vorspeise", "name": "Sulz vom Styria-Beef" },
+			{ "typ": "Hauptspeise", "name": "Wolfsbarschfilet" },
+			{ "typ": "Hauptspeise", "name": "Kalbsleber & gebackenes Bries" },
+			{ "typ": "Desert", "name": "Dunkles Schokomousse" },
+			{ "typ": "Desert", "name": "Orangen-Aperol-Tiramisu" }
+		]
+	}
+
+
+}
